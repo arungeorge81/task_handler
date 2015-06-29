@@ -30,7 +30,7 @@ public class ZeroRejectionThreadPoolExecutor extends ThreadPoolExecutor {
      * @param nThreads
      * @param nThreads2
      * @param keeppAliveTime
-     * @param minutes
+     * @param keepAlive
      * @param synchronousQueue
      * @param pnsAppThreadFactory
      */

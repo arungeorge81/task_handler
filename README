@@ -1,3 +1,9 @@
 TASK HANDLER
 ============
-Delays the task and executes it
+A wrapper on top of java's task executor so that the tasks can be handled in a delayed way .
+
+
+Details
+=======
+
+Java does not allow to schedule a task directly and execute it with delay but allow only one at a time. 
