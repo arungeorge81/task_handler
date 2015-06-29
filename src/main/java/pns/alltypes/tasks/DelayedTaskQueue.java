@@ -12,18 +12,44 @@ import org.apache.log4j.Logger;
 import pns.alltypes.thread.factory.AllAppTypesThreadFactory;
 
 /**
+ * A task queue with a single thread which allows to do the task with simple wait with timeout. This avoids the heavy
+ * threadpool executor and uses a single thread for this.
  * @author arung
  */
 public class DelayedTaskQueue {
+
+    /** The Constant LOGGER. */
     private static final Logger LOGGER = Logger.getLogger(DelayedTaskQueue.class);
+
+    /** The resource runnables which is used to queue the tasks */
     private final BlockingDeque<Runnable> RESOURCE_RUNNABLES = new LinkedBlockingDeque<Runnable>();
 
+    /** The service. */
     private final ExecutorService service;
+
+    /** The random. */
     private final Random RANDOM = new Random();
+
+    /** The thread name. */
     private final String threadName;
+
+    /** The delay. */
     private final int delay;
+
+    /** The executor pool name. */
     private final String executorPoolName;
 
+    /**
+     * Instantiates a new delayed task queue.
+     * @param threadCount
+     *            the thread count
+     * @param threadName
+     *            the thread name
+     * @param executorPoolName
+     *            the executor pool name
+     * @param delay
+     *            the delay
+     */
     public DelayedTaskQueue(final int threadCount, final String threadName, final String executorPoolName, final int delay) {
         this.threadName = threadName;
         this.executorPoolName = executorPoolName;
@@ -32,6 +58,9 @@ public class DelayedTaskQueue {
         init();
     }
 
+    /**
+     * Inits the
+     */
     public void init() {
 
         new Thread(new Runnable() {
@@ -70,6 +99,11 @@ public class DelayedTaskQueue {
 
     }
 
+    /**
+     * Adds the task for delayed execution
+     * @param r
+     *            the r
+     */
     public void addTask(final Runnable r) {
         try {
             getRESOURCE_RUNNABLES().put(r);
@@ -79,34 +113,58 @@ public class DelayedTaskQueue {
     }
 
     /**
-     *
+     * Shutdown the thread
      */
     public void shutdown() {
         getService().shutdown();
 
     }
 
-    public BlockingDeque<Runnable> getRESOURCE_RUNNABLES() {
+    /**
+     * Gets the resource runnables which needs to be submitted
+     * @return the resource runnables
+     */
+    private BlockingDeque<Runnable> getRESOURCE_RUNNABLES() {
         return RESOURCE_RUNNABLES;
     }
 
-    public int getDelay() {
+    /**
+     * Gets the delay.
+     * @return the delay
+     */
+    private int getDelay() {
         return delay;
     }
 
-    public String getExecutorPoolName() {
+    /**
+     * Gets the executor pool name.
+     * @return the executor pool name
+     */
+    private String getExecutorPoolName() {
         return executorPoolName;
     }
 
-    public ExecutorService getService() {
+    /**
+     * Gets the service.
+     * @return the service
+     */
+    private ExecutorService getService() {
         return service;
     }
 
-    public String getThreadName() {
+    /**
+     * Gets the thread name.
+     * @return the thread name
+     */
+    private String getThreadName() {
         return threadName;
     }
 
-    public Random getRANDOM() {
+    /**
+     * Gets the random number
+     * @return the random
+     */
+    private Random getRANDOM() {
         return RANDOM;
     }
 

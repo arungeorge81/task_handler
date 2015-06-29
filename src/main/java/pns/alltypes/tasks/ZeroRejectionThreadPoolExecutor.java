@@ -12,16 +12,17 @@ import org.apache.log4j.Logger;
 
 import pns.alltypes.thread.factory.AllAppTypesThreadFactory;
 
+/**
+ * This class aims at blocking the caller who submits the job based on the fact there is no avialable threads to execute
+ * This helps in implementing a backoff algorithm.
+ * @author arung
+ */
 public class ZeroRejectionThreadPoolExecutor extends ThreadPoolExecutor {
 
     private static final Logger LOGGER = Logger.getLogger(ZeroRejectionThreadPoolExecutor.class);
     private final Lock aLock = new ReentrantLock();
     private final Condition condVar = aLock.newCondition();
 
-    // private static final int ZERO_WAIT_TIME = 0;
-    // private static final int MIN_TIME_FOR_NEXT_DELIVERY = 500;
-    // private static final int RANDOM_TIME_TO_CHECK = 2000;
-    // private static final Random RANDOM = new Random();
     private final AtomicInteger countTasks = new AtomicInteger(0);
     private volatile int maxTasksAllowed;
 
@@ -89,13 +90,7 @@ public class ZeroRejectionThreadPoolExecutor extends ThreadPoolExecutor {
                     if (ZeroRejectionThreadPoolExecutor.LOGGER.isTraceEnabled()) {
                         ZeroRejectionThreadPoolExecutor.LOGGER.trace(String.format("Reached max task allowed for pool %s", getThreadFactory().toString()));
                     }
-                    // int nextInt = RANDOM.nextInt(RANDOM_TIME_TO_CHECK);
-                    // nextInt=
-                    // (nextInt==ZERO_WAIT_TIME)?MIN_TIME_FOR_NEXT_DELIVERY:
-                    // nextInt;
-                    // wait(nextInt);
                     condVar.await();
-
                 }
                 condVar.signalAll();
                 super.execute(command);
