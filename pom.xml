@@ -9,41 +9,36 @@
 	~ License for the specific language governing permissions and limitations 
 	~ under the License. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pns.alltypes</groupId>
 	<artifactId>task-handler</artifactId>
 	<version>0.0.1</version>
 	<name>Task Handling Simplified</name>
-	<url>https://github.com/arungeorge81/task_handler/</url>
 	<description>
       Task Handling makes ease of use for handling tasks related to I/O by giving better task pooling.
     </description>
+	<url>https://github.com/arungeorge81/task_handler</url>
 	<licenses>
 		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 		</license>
 	</licenses>
 	<inceptionYear>2015</inceptionYear>
-
-
-	<scm>
-		<url>https://github.com/arungeorge81/task_handler</url>
-		<connection>scm:git:git://github.com/arungeorge81/task_handler</connection>
-		<developerConnection>scm:git:ssh://git@github.com/arungeorge81/task_handler.git</developerConnection>
-		<tag>HEAD</tag>
-	</scm>
-
 	<developers>
 		<developer>
-			<id>pns.alltypes</id>
-			<name>The Netty Project Contributors</name>
+			<name>Arun George</name>
 			<email>arun.george.1981@gmail.com</email>
-			<url>https://github.com/arungeorge81/task_handler</url>
+			<organization>Sonatype</organization>
+			<organizationUrl>http://www.sonatype.com</organizationUrl>
 		</developer>
 	</developers>
-
+	<scm>
+		<connection>scm:git:git@github.com:arungeorge81/task_handler.git</connection>
+		<developerConnection>scm:git:git@github.com:arungeorge81/task_handler.git</developerConnection>
+		<url>git@github.com:arungeorge81/task_handler.git</url>
+	</scm>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -88,6 +83,20 @@
 						<id>attach-sources</id>
 						<goals>
 							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
 						</goals>
 					</execution>
 				</executions>
