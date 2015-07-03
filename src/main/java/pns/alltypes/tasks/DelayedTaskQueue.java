@@ -1,5 +1,6 @@
 package pns.alltypes.tasks;
 
+import java.io.Serializable;
 import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.BlockingDeque;
@@ -16,7 +17,12 @@ import pns.alltypes.thread.factory.AllAppTypesThreadFactory;
  * threadpool executor and uses a single thread for this.
  * @author arung
  */
-public class DelayedTaskQueue {
+public class DelayedTaskQueue implements Serializable {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = -6409880247712076640L;
 
     /** The Constant LOGGER. */
     private static final Logger LOGGER = Logger.getLogger(DelayedTaskQueue.class);
@@ -24,6 +30,7 @@ public class DelayedTaskQueue {
     /** The resource runnables which is used to queue the tasks */
     private final BlockingDeque<Runnable> RESOURCE_RUNNABLES = new LinkedBlockingDeque<Runnable>();
 
+    private int OVER_FLOW_COUNTER = 0;
     /** The service. */
     private final ExecutorService service;
 
@@ -106,6 +113,9 @@ public class DelayedTaskQueue {
      */
     public void addTask(final Runnable r) {
         try {
+            if (DelayedTaskQueue.LOGGER.isTraceEnabled()) {
+                DelayedTaskQueue.LOGGER.trace(String.format("Adding task %n times", OVER_FLOW_COUNTER++));
+            }
             getRESOURCE_RUNNABLES().put(r);
         } catch (final InterruptedException e) {
             // interruptible.
