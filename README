@@ -7,3 +7,91 @@ Details
 =======
 
 Java does not allow to schedule a task directly and execute it with delay but allow only one at a time. 
+
+Usage
+-----
+private static final DelayedTaskQueue DELAYED_TASK_QUEUE_CONN = new DelayedTaskQueue(1, "ConnectionCreator", "ConnectionPool", 2000);
+
+This will allow you to deposit tasks to a queue and the task will be picked up in a random interval of 2secs and executed but one by one.
+This assumes that the task is like a connection creation job where it needs to be serially done but one by one.
+ScheduledExecutor is too heavy for this as it allows to take up only a cron expression rather than a random interval.
+
+
+RabbitMQConnectionManager.DELAYED_TASK_QUEUE_CONN.addTask(new ConnectionCreator());
+
+
+private static final class ConnectionCreator implements Runnable {
+        private final CountDownLatch thisConnectionLatch = new CountDownLatch(1);
+
+        @Override
+        public void run() {
+
+            try {
+                establishConnection();
+                try {
+                    thisConnectionLatch.await();
+                } catch (final InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            } catch (final Exception e) {
+                RabbitMQConnectionManager.LOGGER.error(String.format("Catch any spurious exceptions %s", e));
+            } finally {
+                RabbitMQConnectionManager.createConnection();
+            }
+
+        }
+
+        private void establishConnection() {
+            if (RabbitMQConnectionManager.LOGGER.isTraceEnabled()) {
+                RabbitMQConnectionManager.LOGGER.trace("inside establishConnection");
+            }
+            AmqpConnection amqpConnection = null;
+            try {
+                if (RabbitMQConnectionManager.LOGGER.isTraceEnabled()) {
+                    RabbitMQConnectionManager.LOGGER.trace("Trying to create connection");
+                }
+                final Connection conn = RabbitMQConnectionManager.CONN_FACTORY.newConnection();
+                if (RabbitMQConnectionManager.LOGGER.isTraceEnabled()) {
+                    RabbitMQConnectionManager.LOGGER.trace(String.format("Created connection: %s", conn.toString()));
+                }
+                final String connectionId = UUID.randomUUID().toString();
+                amqpConnection = new AmqpConnection(connectionId, conn);
+                final AmqpConnection amqpConnection2 = amqpConnection;
+                amqpConnection2.createConnectionMetaData(connectionId);
+
+                conn.addShutdownListener(new ShutdownListener() {
+
+                    @Override
+                    public void shutdownCompleted(final ShutdownSignalException cause) {
+                        RabbitMQConnectionManager.LOGGER.info("shutdownCompleted " + amqpConnection2);
+                        if (RabbitMQConnectionManager.LOGGER.isTraceEnabled()) {
+                            RabbitMQConnectionManager.LOGGER.trace("shutdownCompleted for connection " + amqpConnection2);
+                        }
+
+                        try {
+
+                            amqpConnection2.shutdownConnectionsAndRemoveMeta(connectionId);
+
+                        } catch (final Exception e) {
+                            RabbitMQConnectionManager.LOGGER.error(String.format("Error occured on shutdown is %s", e));
+
+                        } finally {
+                            // dont care for other exception . go and create next connection and channel
+                            thisConnectionLatch.countDown();
+                        }
+
+                    }
+
+                });
+                // break;
+                if (RabbitMQConnectionManager.LOGGER.isTraceEnabled()) {
+                    RabbitMQConnectionManager.LOGGER.trace(String.format("Created connection: %s", amqpConnection));
+                }
+
+            } catch (final IOException e) {
+                thisConnectionLatch.countDown();
+
+            }
+        }
+
+    }
