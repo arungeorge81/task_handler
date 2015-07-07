@@ -134,7 +134,7 @@ public class DelayedTaskQueue implements Serializable {
      * Gets the resource runnables which needs to be submitted
      * @return the resource runnables
      */
-    private BlockingDeque<Runnable> getRESOURCE_RUNNABLES() {
+    protected BlockingDeque<Runnable> getRESOURCE_RUNNABLES() {
         return RESOURCE_RUNNABLES;
     }
 
@@ -142,7 +142,7 @@ public class DelayedTaskQueue implements Serializable {
      * Gets the delay.
      * @return the delay
      */
-    private int getDelay() {
+    public int getDelay() {
         return delay;
     }
 
@@ -150,7 +150,7 @@ public class DelayedTaskQueue implements Serializable {
      * Gets the executor pool name.
      * @return the executor pool name
      */
-    private String getExecutorPoolName() {
+    public String getExecutorPoolName() {
         return executorPoolName;
     }
 
@@ -158,7 +158,7 @@ public class DelayedTaskQueue implements Serializable {
      * Gets the service.
      * @return the service
      */
-    private ExecutorService getService() {
+    public ExecutorService getService() {
         return service;
     }
 
@@ -166,7 +166,7 @@ public class DelayedTaskQueue implements Serializable {
      * Gets the thread name.
      * @return the thread name
      */
-    private String getThreadName() {
+    public String getThreadName() {
         return threadName;
     }
 
@@ -174,7 +174,7 @@ public class DelayedTaskQueue implements Serializable {
      * Gets the random number
      * @return the random
      */
-    private Random getRANDOM() {
+    public Random getRANDOM() {
         return RANDOM;
     }
 
