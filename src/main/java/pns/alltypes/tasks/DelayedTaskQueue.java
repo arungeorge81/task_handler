@@ -8,7 +8,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingDeque;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import pns.alltypes.thread.factory.AllAppTypesThreadFactory;
 
@@ -25,7 +26,7 @@ public class DelayedTaskQueue implements Serializable {
     private static final long serialVersionUID = -6409880247712076640L;
 
     /** The Constant LOGGER. */
-    private static final Logger LOGGER = Logger.getLogger(DelayedTaskQueue.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DelayedTaskQueue.class);
 
     /** The resource runnables which is used to queue the tasks */
     private final BlockingDeque<Runnable> RESOURCE_RUNNABLES = new LinkedBlockingDeque<Runnable>();

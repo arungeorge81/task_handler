@@ -8,7 +8,8 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import pns.alltypes.thread.factory.AllAppTypesThreadFactory;
 
@@ -19,7 +20,7 @@ import pns.alltypes.thread.factory.AllAppTypesThreadFactory;
  */
 public class ZeroRejectionThreadPoolExecutor extends ThreadPoolExecutor {
 
-    private static final Logger LOGGER = Logger.getLogger(ZeroRejectionThreadPoolExecutor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ZeroRejectionThreadPoolExecutor.class);
     private final Lock aLock = new ReentrantLock();
     private final Condition condVar = aLock.newCondition();
 

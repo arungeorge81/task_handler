@@ -13,7 +13,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.cloudbow</groupId>
 	<artifactId>task-handler</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<name>Task Handling Simplified</name>
 	<description>
       Task Handling makes ease of use for handling tasks related to I/O by giving better task pooling.
@@ -46,10 +46,20 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-		</dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>1.1.3</version>
+        </dependency>
 
 	</dependencies>
 

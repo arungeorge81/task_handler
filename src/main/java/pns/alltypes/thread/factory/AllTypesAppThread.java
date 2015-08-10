@@ -2,7 +2,8 @@ package pns.alltypes.thread.factory;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Creation of thread logged as in the book "Best practices in Concurrency"
@@ -13,7 +14,7 @@ public class AllTypesAppThread extends Thread {
     public static final String DEFAULT_NAME = "AllTypesAppThread";
     private static final AtomicInteger created = new AtomicInteger();
     private static final AtomicInteger alive = new AtomicInteger();
-    private static final Logger LOGGER = Logger.getLogger(AllTypesAppThread.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AllTypesAppThread.class);
 
     public AllTypesAppThread(final Runnable r) {
         this(r, AllTypesAppThread.DEFAULT_NAME);
